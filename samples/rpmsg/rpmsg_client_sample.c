@@ -13,7 +13,7 @@
 #include <linux/module.h>
 #include <linux/rpmsg.h>
 
-#define MSG		"hello world! A7-M4"
+#define MSG		"hello world!"
 
 static int count = 100;
 module_param(count, int, 0644);
