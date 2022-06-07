@@ -30,6 +30,11 @@
 #include <linux/mdio.h>
 #include <linux/io.h>
 #include <linux/uaccess.h>
+#include <linux/motorcomm_phy.h>
+
+/* yzhang added for YT8511 phy 125m clock out */
+extern int yt8511_config_out_125m(struct mii_bus *bus, int phy_id);
+extern int yt8511_config_dis_txdelay(struct mii_bus *bus, int phy_id);
 
 MODULE_DESCRIPTION("PHY library");
 MODULE_AUTHOR("Andy Fleming");
@@ -831,7 +836,22 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr, bool is_c45)
 	/* If the phy_id is mostly Fs, there is no device there */
 	if ((phy_id & 0x1fffffff) == 0x1fffffff)
 		return ERR_PTR(-ENODEV);
+        if(0x10a == phy_id)
+        {
+#if 0   
+                r = yt8511_config_dis_txdelay(bus, addr);
+                if (r<0)
+                {
+                        printk (KERN_INFO "yzhang..failed to dis txdelay, ret=%d\n",r);
+                }
+#endif
 
+                r = yt8511_config_out_125m(bus, addr);
+                if (r<0)
+                {
+                        printk (KERN_INFO "yzhang..failed to set 125m clk out, ret=%d\n",r);
+                }
+        }
 	return phy_device_create(bus, addr, phy_id, is_c45, &c45_ids);
 }
 EXPORT_SYMBOL(get_phy_device);
