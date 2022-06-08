@@ -287,7 +287,7 @@ config AT803X_PHY
 	---help---
 	  Currently supports the AT8030 and AT8035 model
 
-onfig MOTORCOMM_PHY
+config MOTORCOMM_PHY
         tristate "Motorcomm PHYs"
         ---help---
          Supports the YT8010, YT8510, YT8511, YT8512 PHYs.
